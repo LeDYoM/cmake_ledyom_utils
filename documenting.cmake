@@ -1,7 +1,7 @@
 
 function(build_docs target_list)
   set(DOXYGEN_GENERATE_HTML YES)
-  set(DOXYGEN_EXCLUDE build;tests)
+#  set(DOXYGEN_EXCLUDE build;tests)
   set(DOXYGEN_EXCLUDE_PATTERNS
     */.git/*
     */build/*
@@ -13,7 +13,8 @@ function(build_docs target_list)
   if (Doxygen_FOUND)
     doxygen_add_docs(
         docs
-        ${target_list} README.md
+        ${PROJECT_SOURCE_DIR}/src
+        README.md
         COMMENT "Generate html pages for the framework"
     )
   else()
