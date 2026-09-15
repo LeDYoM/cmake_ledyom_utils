@@ -1,3 +1,4 @@
+include_guard(GLOBAL)
 
 function(build_docs target_list)
   set(DOXYGEN_GENERATE_HTML YES)
