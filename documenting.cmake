@@ -1,13 +1,8 @@
 include_guard(GLOBAL)
 
-function(build_docs target_list)
+function(build_docs directory readme)
   set(DOXYGEN_GENERATE_HTML YES)
-#  set(DOXYGEN_EXCLUDE build;tests)
-  set(DOXYGEN_EXCLUDE_PATTERNS
-    */.git/*
-    */build/*
-  */tests/*)
-  set(DOXYGEN_USE_MDFILE_AS_MAINPAGE README.md)
+  set(DOXYGEN_USE_MDFILE_AS_MAINPAGE ${readme})
 
   find_package(Doxygen)
 
@@ -15,10 +10,13 @@ function(build_docs target_list)
     doxygen_add_docs(
         docs
         ${PROJECT_SOURCE_DIR}/src
-        README.md
         COMMENT "Generate html pages for the framework"
     )
   else()
     message("Doxygen not found!")
   endif()
+endfunction()
+
+function(build_docs_standard)
+  build_docs(${PROJECT_SOURCE_DIR}/src README.md)
 endfunction()
