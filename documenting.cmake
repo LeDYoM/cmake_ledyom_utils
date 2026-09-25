@@ -8,7 +8,7 @@ function(build_docs target source_dir readme)
   set(DOXYGEN_GENERATE_HTML YES)
   set(DOXYGEN_USE_MDFILE_AS_MAINPAGE ${readme})
 
-  message(STATUS
+  message(DEBUG
     "build_docs. target: ${target}, directory: ${source_dir}, readme: ${readme}")
 
   find_package(Doxygen)

@@ -40,3 +40,11 @@ You can add modules using include(module), or you can use
     # Include all modules (cmake_ledyom_utils_all)
     include(c_l_u_a)
 ```
+
+## Modules
+
+There are these modules included:
+- compiling.cmake:
+  - This file contains functions to help compiling.
+- documenting.cmake:
+  - This file contains functions to configure the generation of documentation.

@@ -3,30 +3,28 @@ include_guard(GLOBAL)
 # Set properties related to C++ standard. Basically, the version required.
 # param current_target: the target to apply the properties to
 # param cxx_version: the C++ version to set. Must be supported by the compiler
-function(set_cxx_standard current_target cxx_version)
-    set_target_properties(${current_target} PROPERTIES
+function(set_cxx_standard targets cxx_version)
+    set_target_properties(${targets} PROPERTIES
         CXX_STANDARD ${cxx_version}
         CXX_STANDARD_REQUIRED ON
         CXX_EXTENSIONS OFF)
-    message("C++ version set to ${cxx_version}")
+    message(DEBUG "C++ version for ${target} set to ${cxx_version}")
 endfunction()
 
 # Set the target as position independent code. It should be done for at least
 # all libraries.
 # param current_target: the target to apply the properties to
 function(add_pie_if_available current_target)
-    message(CHECK_START "Checking for C C++ linker PIE support")
-
-    include(CheckPIESupported)
-    check_pie_supported(OUTPUT_VARIABLE output LANGUAGES C CXX)
     set_property(TARGET ${current_target} PROPERTY POSITION_INDEPENDENT_CODE TRUE)
 
+    include(CheckPIESupported)
+    check_pie_supported(OUTPUT_VARIABLE output LANGUAGES CXX)
+
     if(CMAKE_C_LINK_PIE_SUPPORTED AND CMAKE_CXX_LINK_PIE_SUPPORTED)
-        message(CHECK_PASS "yes")
+        message(DEBUG "PIE linker support")
     else()
-        message(CHECK_FAIL "no")
-        message("PIE is not supported at link time:\n${output}"
-            "PIE link options will not be passed to linker.")
+        message(DEBUG "no PIE linker support: PIE not supported at"
+            "link time: ${output}")
     endif()
 endfunction()
 
@@ -51,8 +49,10 @@ endfunction()
 # Shortcut to set the cxx standard, pie and strict warnings in one go
 # param current_target: the target to apply the properties to
 # param cxx_version: the C++ version to set. Must be supported by the compiler
-function(set_my_standards_cxx_options current_target version)
-    set_cxx_standard(${current_target} ${version})
-    add_pie_if_available(${current_target})
-    set_strict_warnings(${current_target})
+function(set_my_standards_cxx_options targets version)
+    foreach(target ${targets})
+        set_cxx_standard(${target} ${version})
+        add_pie_if_available(${target})
+        set_strict_warnings(${target})
+    endforeach()
 endfunction()
