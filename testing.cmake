@@ -1,5 +1,7 @@
 include_guard(GLOBAL)
 
+include(compiling)
+
 macro(testing_init)
   enable_testing()
   prepareTestLibrary()
@@ -37,7 +39,6 @@ endfunction()
 
 function(add_test_executable target)
   cmake_parse_arguments(LC_BUILD "" "" "SOURCE_TESTS" ${ARGN})
-  message("AAAAAAA: ${target}")
 
   prepareTestLibrary()
 
@@ -49,7 +50,7 @@ function(add_test_executable target)
   target_sources(${target} PRIVATE ${SOURCE_TESTS_LIST})
   target_compile_definitions(${target} PUBLIC CATCH_CONFIG_ENABLE_BENCHMARKING)
   target_link_libraries(${target} PUBLIC Catch2::Catch2WithMain)
-
+  set_my_standards_cxx_options(${target} 23)
   add_test(NAME ${target} COMMAND ${target})
 endfunction()
 
