@@ -1,5 +1,7 @@
 include_guard(GLOBAL)
 
+include(compiling)
+
 macro(testing_init)
   enable_testing()
   prepareTestLibrary()
