@@ -1,5 +1,7 @@
 include_guard(GLOBAL)
 
+include (clang_tidy)
+
 # Set properties related to C++ standard. Basically, the version required.
 # param current_target: the target to apply the properties to
 # param cxx_version: the C++ version to set. Must be supported by the compiler
@@ -54,5 +56,6 @@ function(set_my_standards_cxx_options targets version)
         set_cxx_standard(${target} ${version})
         add_pie_if_available(${target})
         set_strict_warnings(${target})
+        target_add_clang_tidy("${target}" "")
     endforeach()
 endfunction()
